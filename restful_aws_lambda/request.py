@@ -9,11 +9,13 @@ from typing import Optional
 
 
 # pylint: disable=R0903
-class _SET:
-    pass
+class _Unset:
+    def __repr__(self) -> str:
+        return "<Unset object>"
 
 
-SET = _SET()
+# Singleton
+Unset = _Unset()
 
 
 class Request:
@@ -92,7 +94,7 @@ class Request:
             "queryStringParameters"
         )
         return {
-            param_name: value if value is not None else SET
+            param_name: value if value else Unset
             for param_name, value in query_params.items()
         }
 
