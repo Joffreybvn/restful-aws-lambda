@@ -8,6 +8,14 @@ import json
 from typing import Optional
 
 
+# pylint: disable=R0903
+class _SET:
+    pass
+
+
+SET = _SET()
+
+
 class Request:
     """
     Request objects created in @route handlers, and accessible
@@ -80,7 +88,13 @@ class Request:
         >>> Request(event).query_params
         {'page': '3'}
         """
-        return self._get_event_key_none_as_empty("queryStringParameters")
+        query_params = self._get_event_key_none_as_empty(
+            "queryStringParameters"
+        )
+        return {
+            param_name: value if value is not None else SET
+            for param_name, value in query_params.items()
+        }
 
     @property
     def method(self) -> str:
